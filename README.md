@@ -1,2 +1,30 @@
 # Glowpick-review-analysis
-Using unsupervised algorithm make customenr segmentation and recommend a product that user probably likes
+
+대표적인 국내 뷰티 리뷰 플랫폼인 글로우픽을 대상으로 개인 맞춤형 뷰티 제품 추천 알고리즘을 작성하였습니다.
+
+본 프로젝트의 목표를 '타겟 고객 분류 및 뷰티 제품 추천 시스템 개발'을 통한 타겟 마케팅 전략 수립으로 설정하였습니다.
+이를 통해 리뷰 데이터로부터 고객의 행동을 파악한 후 휴면 우수 고객 집단을 식별 및 분류해내고, 이들을 복귀 고객으로 전환 시키고자 합니다.
+
+본 프로젝트는 [데이터 수집 → 고객 군집화 → 타겟 유저 집단 추출 → 뷰티 제품 추천 알고리즘 개발 → 타겟 마케팅용 제품 선정] 순서로 진행되었습니다.
+
+- 고객 군집화 및 타겟 유저 집단 추출을 위해 k-means clustering 과 Hierarchical clustering을 진행했으며, 두 기법의 결과를 비교하여 최적의 k값에 대한 일관성을 확인하였습니다.
+
+[ 고객 군집화 ]
+- RFM 개념을 활용한 3가지 파생 변수를 생성하였습니다.
+-  “유저가 작성한 리뷰의 최신도”, “유저의 리뷰 작성 주기”, “유저가 작성한 총 리뷰 개수” 
+  * review_recency : 리뷰 수집일 – 리뷰 작성일 (days)
+  * mean_review_time_lag : 다음 리뷰 작성 까지 평균 일수 (days) 
+  * total_review_num : nickname 별 총 작성 리뷰 개수
+- K means clustering, hierarchical 2 기법을 통해 robust한지 판단하였습니다.
+- 결론적으로 크롤링으로 수집한 표본 개수가 부족하여 명확한 고객 군집을 나눌 수 없었고, 최대-최솟범에 따른 RFM scoring을 진행하였습니다.
+- 이를 통해 고객을 5개 class로 나누고, 그 중에서도 가중치를 통해 본 연구의 목표인 '활발히 활동했던 휴면 유저'일수록 높은 class로 배정하였습니다.
+
+[ item based recommendation ]
+- 뷰티 제품 추천 알고리즘 개발을 위해 텍스트 마이닝을 사용하여 제품 정보 데이터 프레임으로부터 효능 키워드를 추출하였습니다.
+- 각 단어들의 TF-IDF 점수를 구한 후 DTM(Document Term Matrix)을 생성해 코사인 유사도 연산을 이용해 제품 유사도 행렬을 구했습니다.
+- 최종적으로 고객이 선호했던 제품과 가장 효능이 유사한 TOP5 제품을 추천해주는 알고리즘을 개발하였습니다.
+
+[ 최종 추천 화면 ]
+
+![image](https://user-images.githubusercontent.com/99151374/177766422-e2d732d8-56b9-4277-8d72-e1f84c856b97.png)
+
